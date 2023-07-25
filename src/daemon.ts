@@ -4,7 +4,18 @@ import path = require("path");
 const livegoOptions = require(process.env.CONFIG_PATH).livego;
 
 export async function runBinaryFile() {
-  const binaryProcess = spawn(path.resolve("config", "livego.exe"), [
+  let binaryName = "livego";
+
+  switch (process.platform) {
+    case "win32":
+      binaryName += ".exe";
+      break;
+
+    default:
+      break;
+  }
+
+  const binaryProcess = spawn(path.resolve("config", binaryName), [
     `--api_addr=${livegoOptions.api_host}:${livegoOptions.api_port}`,
     `--hls_addr=${livegoOptions.stream_host}:${livegoOptions.hls_port}`,
     `--httpflv_addr=${livegoOptions.stream_host}:${livegoOptions.flv_port}`,
