@@ -7,7 +7,8 @@ import {
 import { readFileSync } from "fs";
 import path = require("path");
 
-const livegoConfig = require(process.env.CONFIG_PATH).livego;
+const config = require(process.env.CONFIG_PATH);
+const livegoOptions = config.livego;
 
 const defaultAvatar = readFileSync(path.resolve("assets", "avatar.png"));
 
@@ -35,9 +36,9 @@ export async function getLiveroomInfoCtrl(req: Request, res: Response) {
   const stream =
     user.verified === 1
       ? {
-          rtmp: `rtmp://${livegoConfig.stream_host}:${livegoConfig.rtmp_port}/${livegoConfig.app_name}/${roomid}`,
-          flv: `http://${livegoConfig.stream_host}:${livegoConfig.flv_port}/${livegoConfig.app_name}/${roomid}.flv`,
-          hls: `http://${livegoConfig.stream_host}:${livegoConfig.hls_port}/${livegoConfig.app_name}/${roomid}.m3u8`,
+          rtmp: `rtmp://${config.host}:${livegoOptions.rtmp_port}/${livegoOptions.app_name}/${roomid}`,
+          flv: `http://${config.host}:${livegoOptions.flv_port}/${livegoOptions.app_name}/${roomid}.flv`,
+          hls: `http://${config.host}:${livegoOptions.hls_port}/${livegoOptions.app_name}/${roomid}.m3u8`,
         }
       : null;
 

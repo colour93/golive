@@ -24,7 +24,7 @@ router.get("/overview", async (req: Request, res: Response) => {
   res.send({
     app: packageInfo.name,
     version: packageInfo.version,
-    streamServer: `rtmp://${config.livego.stream_host}:${config.livego.rtmp_port}/${config.livego.app_name}`,
+    streamServer: `rtmp://${config.host}:${config.livego.rtmp_port}/${config.livego.app_name}`,
     liveroomBase: config.tls
       ? `https://${config.host}:${config.tls.port}/#/live`
       : `http://${config.host}:${config.port}/#/live`,

@@ -1,31 +1,28 @@
 {
-    "host": "localhost",
-    "port": 9889,
-    "session_secret": "session_secret",
-    "tls": {
-      "enable": false,
-      "port": 9890
-    },
-    "livego": {
-      "api_host": "localhost",
-      "api_port": 8090,
-      "stream_host": "localhost",
-      "rtmp_port": 1935,
-      "flv_port": 7001,
-      "hls_port": 7002,
-      "app_name": "live"
-    },
-    "mail": {
-      "from": "玖叁<fur93@furdevs.cn>",
-      "options": {
-        "host": "smtp.office365.com",
-        "port": 587,
-        "secure": false,
-        "auth": {
-          "user": "user",
-          "pass": "pass"
-        }
+  "host": "live.host.com",
+  "port": 9889,
+  "session_secret": "session_secret",
+  "tls": {
+    "enable": false,
+    "port": 9890
+  },
+  "livego": {
+    "api_port": 8090,
+    "rtmp_port": 1935,
+    "flv_port": 7001,
+    "hls_port": 7002,
+    "app_name": "live"
+  },
+  "mail": {
+    "from": "玖叁<fur93@furdevs.cn>",
+    "options": {
+      "host": "smtp.office365.com",
+      "port": 587,
+      "secure": false,
+      "auth": {
+        "user": "user",
+        "pass": "pass"
       }
     }
   }
-  
+}

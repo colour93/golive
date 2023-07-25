@@ -79,7 +79,7 @@ function convertUserToUserProfile(user: User): UserProfile {
 
   const streamServer =
     verified === 1
-      ? `rtmp://${config.livego.stream_host}:${config.livego.rtmp_port}/${config.livego.app_name}`
+      ? `rtmp://${config.host}:${config.livego.rtmp_port}/${config.livego.app_name}`
       : null;
   const liveroom =
     verified === 1

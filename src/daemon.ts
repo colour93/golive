@@ -16,10 +16,10 @@ export async function runBinaryFile() {
   }
 
   const binaryProcess = spawn(path.resolve("config", binaryName), [
-    `--api_addr=${livegoOptions.api_host}:${livegoOptions.api_port}`,
-    `--hls_addr=${livegoOptions.stream_host}:${livegoOptions.hls_port}`,
-    `--httpflv_addr=${livegoOptions.stream_host}:${livegoOptions.flv_port}`,
-    `--rtmp_addr=${livegoOptions.stream_host}:${livegoOptions.rtmp_port}`,
+    `--api_addr=localhost:${livegoOptions.api_port}`,
+    `--hls_addr=:${livegoOptions.hls_port}`,
+    `--httpflv_addr=:${livegoOptions.flv_port}`,
+    `--rtmp_addr=:${livegoOptions.rtmp_port}`,
     `--level=${process.env.ENV === "dev" ? "debug" : "info"}`,
   ]);
 

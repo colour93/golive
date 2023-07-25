@@ -19,9 +19,7 @@ const config = require(process.env.CONFIG_PATH);
 
 runBinaryFile();
 
-axios.defaults.baseURL = `http://${
-  config.livego.api_host === "localhost" ? "127.0.0.1" : config.livego.api_host
-}:${config.livego.api_port}`;
+axios.defaults.baseURL = `http://127.0.0.1:${config.livego.api_port}`;
 
 AppDataSource.initialize()
   .then(async () => {
@@ -44,8 +42,8 @@ AppDataSource.initialize()
     console.log("server is starting...");
 
     const httpServer = http.createServer(app);
-    httpServer.listen(config.port, config.host, () => {
-      console.log(`http: http://${config.host}:${config.port}`);
+    httpServer.listen(config.port, () => {
+      console.log(`http listen on ${config.port}`);
     });
 
     if (config.tls?.enable) {
@@ -56,8 +54,8 @@ AppDataSource.initialize()
         },
         app
       );
-      httpsServer.listen(config.tls.port, config.host, () => {
-        console.log(`https: https://${config.host}:${config.tls.port}`);
+      httpsServer.listen(config.tls.port, () => {
+        console.log(`https listen on ${config.tls.port}, host: ${config.host}`);
       });
     }
   })
