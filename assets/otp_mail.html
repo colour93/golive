@@ -1,0 +1,59 @@
+<style>
+    * {
+        font-family: PingFang, Microsoft YaHei;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin: 0;
+    }
+
+    header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #536dfe;
+        color: #fff;
+        font-size: 36px;
+        font-weight: 900;
+        padding: 25px 0;
+    }
+
+    .desc {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 0;
+        font-size: 20px;
+    }
+
+    .code-box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .code {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 250px;
+        padding: 40px 0;
+        background: #eee;
+        font-size: 36px;
+        font-weight: 900;
+    }
+</style>
+
+<body>
+    <header>GoLive</header>
+    <div class="desc">{{desc}}</div>
+    <div class="code-box">
+        <div class="code">{{code}}</div>
+    </div>
+</body>
