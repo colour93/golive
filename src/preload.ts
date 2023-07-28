@@ -5,7 +5,7 @@ export function preload() {
   if (!["win32", "linux"].includes(process.platform))
     throw new Error(`unsupported platform ${process.platform}`);
 
-  if (process.env.ENV === "dev") console.log("running on dev mode");
+  if (process.env.ENV.includes("dev")) console.log("running on dev mode");
 
   if (!fs.existsSync("config")) fs.mkdirSync("config");
   if (!fs.statSync("config").isDirectory())
@@ -13,13 +13,12 @@ export function preload() {
 
   if (process.env.ENV !== "dev" && !fs.existsSync("config.json"))
     throw new Error("please check 'config.json'");
-  if (process.env.ENV === "dev" && !fs.existsSync("config.dev.json"))
+  if (process.env.ENV.includes("dev") && !fs.existsSync("config.dev.json"))
     throw new Error("please check 'config.dev.json'");
 
-  process.env.CONFIG_PATH =
-    process.env.ENV === "dev"
-      ? path.resolve("config.dev.json")
-      : path.resolve("config.json");
+  process.env.CONFIG_PATH = process.env.ENV.includes("dev")
+    ? path.resolve("config.dev.json")
+    : path.resolve("config.json");
 
   const config = require(process.env.CONFIG_PATH);
   if (config.tls?.enable) {

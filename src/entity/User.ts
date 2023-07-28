@@ -1,12 +1,7 @@
 import * as argon2 from "argon2";
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  BeforeInsert,
-  BeforeUpdate,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from "typeorm";
+
+const databaseConfig = require(process.env.CONFIG_PATH).database;
 
 @Entity()
 export class User {
@@ -28,20 +23,24 @@ export class User {
   @Column({ default: 0 })
   verified: number;
 
-  @Column({ type: "blob", nullable: true })
+  @Column({
+    type: databaseConfig.type === "sqlite" ? "blob" : "longblob",
+    nullable: true,
+  })
   avatar?: Buffer;
 
   @Column({ nullable: true })
-  avatarExt?: 'png' | 'jpeg' | 'webp';
+  avatarExt?: "png" | "jpeg" | "webp";
 
   @Column({ nullable: true })
   key?: string;
 
-  @CreateDateColumn({ default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: "datetime", precision: 6 })
   created: Date;
 
   @BeforeInsert()
-  async hashPassword() {
+  async preProcess() {
+    this.created = new Date();
     this.password = await argon2.hash(this.password);
   }
 }

@@ -11,6 +11,7 @@ import { AppDataSource } from "./data-source";
 import axios from "axios";
 
 import route from "./router";
+import liveProxy from "./proxy/live";
 import { readFileSync } from "fs";
 import path = require("path");
 import { runBinaryFile } from "./daemon";
@@ -38,6 +39,8 @@ AppDataSource.initialize()
     if (process.env.ENV !== "dev") app.use("/", express.static("static"));
 
     app.use("/api", route);
+
+    app.use("/live", liveProxy);
 
     console.log("server is starting...");
 

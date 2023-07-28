@@ -3,12 +3,14 @@ import { DataSource } from "typeorm";
 import { User } from "./entity/User";
 import { OTP } from "./entity/OTP";
 
-export const AppDataSource = new DataSource({
-  type: "sqlite",
-  database: "config/data.db",
+const databaseConfig = require(process.env.CONFIG_PATH).database;
+
+const baseOptions = {
   synchronize: true,
   logging: false,
   entities: [User, OTP],
-  migrations: [],
-  subscribers: [],
-});
+};
+
+let connOptions = Object.assign(databaseConfig, baseOptions);
+
+export const AppDataSource = new DataSource(connOptions);

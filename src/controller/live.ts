@@ -37,8 +37,8 @@ export async function getLiveroomInfoCtrl(req: Request, res: Response) {
     user.verified === 1
       ? {
           rtmp: `rtmp://${config.host}:${livegoOptions.rtmp_port}/${livegoOptions.app_name}/${roomid}`,
-          flv: `http://${config.host}:${livegoOptions.flv_port}/${livegoOptions.app_name}/${roomid}.flv`,
-          hls: `http://${config.host}:${livegoOptions.hls_port}/${livegoOptions.app_name}/${roomid}.m3u8`,
+          flv: `/live/${roomid}.flv`,
+          hls: `/live/${roomid}.m3u8`,
         }
       : null;
 

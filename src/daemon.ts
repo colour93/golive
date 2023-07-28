@@ -20,7 +20,7 @@ export async function runBinaryFile() {
     `--hls_addr=:${livegoOptions.hls_port}`,
     `--httpflv_addr=:${livegoOptions.flv_port}`,
     `--rtmp_addr=:${livegoOptions.rtmp_port}`,
-    `--level=${process.env.ENV === "dev" ? "debug" : "info"}`,
+    `--level=${process.env.ENV.includes("dev") ? "debug" : "info"}`,
   ]);
 
   binaryProcess.stdout.on("data", (data) => {

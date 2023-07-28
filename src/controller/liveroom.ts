@@ -1,6 +1,9 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
-import { updateUserProfileByUsername } from "../service/user";
+import {
+  getUserProfileByUsername,
+  updateUserProfileByUsername,
+} from "../service/user";
 
 class LiveGoKeyResponse {
   status: number;
@@ -9,6 +12,24 @@ class LiveGoKeyResponse {
 
 export async function getStreamKey(req: Request, res: Response) {
   const { username } = req.session;
+
+  const user = await getUserProfileByUsername(username);
+
+  if (!user) {
+    res.send({
+      code: 404,
+      msg: "未找到该用户",
+    });
+    return;
+  }
+
+  if (user.verified === 0) {
+    res.send({
+      code: 403,
+      msg: "用户未认证",
+    });
+    return;
+  }
 
   try {
     const result = (await axios

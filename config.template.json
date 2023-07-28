@@ -6,6 +6,9 @@
     "enable": false,
     "port": 9890
   },
+  "database": {
+    "ALERT": "here is about 'https://typeorm.io/data-source-options'"
+  },
   "livego": {
     "api_port": 8090,
     "rtmp_port": 1935,
