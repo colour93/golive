@@ -2,20 +2,19 @@ import { NextFunction, Request, Response } from "express";
 
 import {
   getUserAvatarByUsername,
-  getUserInfoByUsername,
+  getUserLiveInfoByUsername,
 } from "../service/user";
 import { readFileSync } from "fs";
 import path = require("path");
 
 const config = require(process.env.CONFIG_PATH);
-const livegoOptions = config.livego;
 
 const defaultAvatar = readFileSync(path.resolve("assets", "avatar.png"));
 
 export async function getLiveroomInfoCtrl(req: Request, res: Response) {
-  const { roomid } = req.query;
+  const roomId = req.query.roomId as string;
 
-  if (!roomid) {
+  if (!roomId) {
     res.send({
       code: 400,
       msg: "请求错误，请检查参数",
@@ -23,9 +22,9 @@ export async function getLiveroomInfoCtrl(req: Request, res: Response) {
     return;
   }
 
-  const user = await getUserInfoByUsername(roomid);
+  const userLiveInfo = await getUserLiveInfoByUsername(roomId);
 
-  if (!user) {
+  if (!userLiveInfo) {
     res.send({
       code: 404,
       msg: "没有找到该房间或用户",
@@ -33,22 +32,10 @@ export async function getLiveroomInfoCtrl(req: Request, res: Response) {
     return;
   }
 
-  const stream =
-    user.verified === 1
-      ? {
-          rtmp: `rtmp://${config.host}:${livegoOptions.rtmp_port}/${livegoOptions.app_name}/${roomid}`,
-          flv: `/live/${roomid}.flv`,
-          hls: `/live/${roomid}.m3u8`,
-        }
-      : null;
-
   res.send({
     code: 0,
     msg: "获取成功",
-    data: {
-      user,
-      stream,
-    },
+    data: userLiveInfo,
   });
 }
 

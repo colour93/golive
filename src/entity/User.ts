@@ -58,3 +58,12 @@ export class UserProfile extends UserInfo {
   streamKey: string;
   liveroom: string;
 }
+
+
+export class UserLiveInfo {
+  user: UserInfo;
+  stream: {
+    flv: string;
+    hls: string;
+  } | null;
+}

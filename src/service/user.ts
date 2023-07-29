@@ -1,5 +1,5 @@
 import { AppDataSource } from "../data-source";
-import { User, UserInfo, UserProfile } from "../entity/User";
+import { User, UserInfo, UserLiveInfo, UserProfile } from "../entity/User";
 
 const config = require(process.env.CONFIG_PATH);
 
@@ -29,6 +29,14 @@ export async function getUserProfileByUsername(
   const user = await userRepo.findOne({ where: { username } });
   if (!user) return null;
   return convertUserToUserProfile(user);
+}
+
+export async function getUserLiveInfoByUsername(
+  username: string
+): Promise<UserLiveInfo | null> {
+  const userInfo = await getUserInfoByUsername(username);
+  if (!userInfo) return null;
+  return convertUserInfoToUserLiveInfo(userInfo);
 }
 
 /**
@@ -70,6 +78,24 @@ function convertUserToUserInfo(user: User): UserInfo {
 
 /**
  * 将 User 转为 UserInfo
+ * @param user
+ * @returns
+ */
+function convertUserInfoToUserLiveInfo(user: UserInfo): UserLiveInfo {
+  return {
+    user,
+    stream:
+      user.verified === 1
+        ? {
+            flv: `/live/${user.username}.flv`,
+            hls: `/live/${user.username}.m3u8`,
+          }
+        : null,
+  };
+}
+
+/**
+ * 将 User 转为 UserProfile
  * @param user
  * @returns
  */

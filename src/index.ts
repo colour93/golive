@@ -10,6 +10,8 @@ import { AppDataSource } from "./data-source";
 
 import axios from "axios";
 
+import { wssCtrl } from "./ws";
+
 import route from "./router";
 import liveProxy from "./proxy/live";
 import { readFileSync } from "fs";
@@ -17,6 +19,20 @@ import path = require("path");
 import { runBinaryFile } from "./daemon";
 
 const config = require(process.env.CONFIG_PATH);
+
+const sessionParser = session({
+  secret: config.session_secret,
+  resave: false,
+  saveUninitialized: false,
+});
+
+declare module "express-session" {
+  interface SessionData {
+    username: string;
+  }
+}
+
+export default sessionParser;
 
 runBinaryFile();
 
@@ -26,13 +42,7 @@ AppDataSource.initialize()
   .then(async () => {
     const app = express();
 
-    app.use(
-      session({
-        secret: config.session_secret,
-        resave: false,
-        saveUninitialized: false,
-      })
-    );
+    app.use(sessionParser);
 
     app.use(bodyParser.json());
 
@@ -45,8 +55,11 @@ AppDataSource.initialize()
     console.log("server is starting...");
 
     const httpServer = http.createServer(app);
+
+    httpServer.on("upgrade", wssCtrl);
+
     httpServer.listen(config.port, () => {
-      console.log(`http listen on ${config.port}`);
+      console.log(`http & ws listen on ${config.port}`);
     });
 
     if (config.tls?.enable) {
@@ -57,9 +70,32 @@ AppDataSource.initialize()
         },
         app
       );
+
+      httpsServer.on("upgrade", wssCtrl);
+
       httpsServer.listen(config.tls.port, () => {
-        console.log(`https listen on ${config.tls.port}, host: ${config.host}`);
+        console.log(
+          `https & wss listen on ${config.tls.port}, host: ${config.host}`
+        );
       });
     }
   })
   .catch((error) => console.log(error));
+
+// TODO: tsconfig.json 修改 typeRoots 无效
+declare module "express-session" {
+  interface SessionData {
+    username: string;
+  }
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      file: {
+        buffer: Buffer;
+        originalname: string;
+      };
+    }
+  }
+}

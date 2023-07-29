@@ -6,7 +6,7 @@ const router = Router();
 const livegoOptions = require(process.env.CONFIG_PATH).livego;
 
 router.use(
-  "/:roomid.flv",
+  "/:roomId.flv",
   createProxyMiddleware({
     target: `http://localhost:${livegoOptions.flv_port}`,
     pathRewrite: {
@@ -18,7 +18,7 @@ router.use(
 );
 
 router.use(
-  ["/:roomid.m3u8", "/:roomid/:timestamp.ts"],
+  ["/:roomId.m3u8", "/:roomId/:timestamp.ts"],
   createProxyMiddleware({
     target: `http://localhost:${livegoOptions.hls_port}`,
     pathRewrite: {
