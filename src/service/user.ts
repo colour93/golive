@@ -91,6 +91,14 @@ function convertUserInfoToUserLiveInfo(user: UserInfo): UserLiveInfo {
             hls: `/live/${user.username}.m3u8`,
           }
         : null,
+    ws:
+      user.verified === 1
+        ? {
+            chat: `${config.tls?.enable ? "wss" : "ws"}://${config.host}:${
+              config.tls?.enable ? config.tls.port : config.port
+            }/ws/chat?roomId=${user.username}`,
+          }
+        : null,
   };
 }
 

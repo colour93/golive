@@ -66,4 +66,7 @@ export class UserLiveInfo {
     flv: string;
     hls: string;
   } | null;
+  ws: {
+    chat: string;
+  } | null;
 }
